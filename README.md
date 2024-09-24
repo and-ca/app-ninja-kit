@@ -1,6 +1,7 @@
+![App Icon](./resources/icon.png)
 # App Ninja Kit
 
-**App Ninja Kit** is a frameless, powerful, and flexible open-source template designed to streamline the development of modern, fast, and secure cross-platform applications. Built with **Electron**, **Vite**, **React**, **Redux**, **TypeScript**, **Tailwind**, and featuring **secure local storage** with localization support, App Ninja Kit provides the foundation for building robust apps.
+**App Ninja Kit** is a frameless, powerful, and flexible open-source template designed to streamline the development of modern, fast, and secure cross-platform applications. Built with **[Electron](https://www.electronjs.org/)**, **[Vite](https://electron-vite.org/)**, **[React](https://react.dev/)**, **[Redux](https://redux.js.org/introduction/examples)**, **[TypeScript](https://www.typescriptlang.org/)**, **[Tailwind](https://tailwindcss.com/)**, and featuring **secure local storage** with localization support, App Ninja Kit provides the foundation for building robust apps.
 
 ## Features
 - Frameless window for modern UI/UX.
@@ -15,21 +16,21 @@ App Ninja Kit includes a pre-built registration and sign-in system.
 We recommend the following tools for an optimal development experience:
 - [VSCode](https://code.visualstudio.com/)
 - [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
-- [Prettier](https:/
+- [Prettier](https://prettier.io/)
 
 ## Installation
 
 1. Clone the repository:
 
-   ```bash
-   git clone git@github.com:your-username/app-ninja-kit.git
-   cd app-ninja-kit
-   ```
+```bash
+git clone git@github.com:your-username/app-ninja-kit.git
+cd app-ninja-kit
+```
 
 2. Install dependencies
 
 ```bash
-$ npm install
+npm install
 ```
 
 3. Create a .env file at the root of the project and add the following environment variable with a HEX key:
@@ -38,7 +39,7 @@ $ npm install
 MAIN_VITE_CRYPTO_SECRET=your-generated-hex-key
 ```
 
-**Generate Key:** You can generate a HEX key using the following command:
+  **Generate Key:** You can generate a HEX key using the following command:
 
 ```bash
  node .\genarateRandomKey.mjs
@@ -47,20 +48,20 @@ MAIN_VITE_CRYPTO_SECRET=your-generated-hex-key
 4. Start development:
 
 ```bash
-$ npm run dev
+npm run dev
 ```
 
 ### Build
 
 ```bash
 # For windows
-$ npm run build:win
+npm run build:win
 
 # For macOS
-$ npm run build:mac
+npm run build:mac
 
 # For Linux
-$ npm run build:linux
+npm run build:linux
 ```
 
 ## Secure Session Configuration
@@ -103,8 +104,13 @@ App Ninja Kit utilizes a double encryption mechanism to secure local data:
 
 This double encryption approach ensures that sensitive data remains protected from unauthorized access, both at the application level and user-specific level.
 
-## ROAD MAP
+## Roadmap
 
-  1. Unit and E2E tests
-  2. Include User Profile - View and Update
-  3. Improve Errors Handler - Error Messages and Style
+- **Unit and E2E Tests:**  
+  Implement comprehensive unit and end-to-end (E2E) tests to ensure robust functionality and improve code quality.
+
+- **User Profile Management:**  
+  Add user profile functionality, allowing users to view and update their personal information.
+
+- **Error Handling Improvements:**  
+  Enhance error handling mechanisms by improving error messages and refining the overall style for better user experience.
