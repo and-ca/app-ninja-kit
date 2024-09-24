@@ -104,13 +104,6 @@ App Ninja Kit utilizes a double encryption mechanism to secure local data:
 
 This double encryption approach ensures that sensitive data remains protected from unauthorized access, both at the application level and user-specific level.
 
-## Roadmap
+## Contributing
 
-- **Unit and E2E Tests:**  
-  Implement comprehensive unit and end-to-end (E2E) tests to ensure robust functionality and improve code quality.
-
-- **User Profile Management:**  
-  Add user profile functionality, allowing users to view and update their personal information.
-
-- **Error Handling Improvements:**  
-  Enhance error handling mechanisms by improving error messages and refining the overall style for better user experience.
+We welcome contributions to this project! Please see the [CONTRIBUTING.md](./CONTRIBUTING.md) file for guidelines on how to contribute, including important legal agreements.
