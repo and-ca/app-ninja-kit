@@ -1,0 +1,8 @@
+{
+  "extends": "@electron-toolkit/tsconfig/tsconfig.node.json",
+  "include": ["electron.vite.config.*", "src/main/**/*", "src/preload/**/*", "src/preload/apis/*", "src/Enum.ts", "src/renderer/src/Enum.ts"],
+  "compilerOptions": {
+    "composite": true,
+    "types": ["electron-vite/node"]
+  }
+}
