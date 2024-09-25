@@ -24,3 +24,25 @@ changelog:
     - title: Other Changes
       labels:
         - "*"
+
+# Optional step to automatically update the CHANGELOG.md file after each release
+on:
+  release:
+    types: [published]
+
+jobs:
+  update_changelog:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Update Changelog
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git pull origin main
+          echo "## Version $(git describe --tags --abbrev=0)" >> CHANGELOG.md
+          git add CHANGELOG.md
+          git commit -m "Update changelog for new release"
+          git push origin main
