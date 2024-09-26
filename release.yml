@@ -37,12 +37,28 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
+      - name: Get release details from GitHub
+        id: release_info
+        run: |
+          RELEASE_TITLE=$(jq -r '.release.name' "$GITHUB_EVENT_PATH")
+          RELEASE_NOTES=$(jq -r '.release.body' "$GITHUB_EVENT_PATH")
+          echo "RELEASE_TITLE=${RELEASE_TITLE}" >> $GITHUB_ENV
+          echo "RELEASE_NOTES=${RELEASE_NOTES}" >> $GITHUB_ENV
+
       - name: Update Changelog
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
           git pull origin main
-          echo "## Version $(git describe --tags --abbrev=0)" >> CHANGELOG.md
+
+          # Fetch the latest tag and release date
+          LATEST_TAG=$(git describe --tags --abbrev=0)
+          RELEASE_DATE=$(date +'%Y-%m-%d')
+
+          # Prepend the new release to the top of CHANGELOG.md
+          echo -e "v${LATEST_TAG} - ${RELEASE_DATE} - ##${RELEASE_TITLE}##\n${RELEASE_NOTES}\n\n$(cat CHANGELOG.md)" > CHANGELOG.md
+
+          # Add, commit, and push the changes
           git add CHANGELOG.md
           git commit -m "Update changelog for new release"
           git push origin main
