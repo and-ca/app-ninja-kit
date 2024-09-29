@@ -126,11 +126,8 @@ jobs:
           #open the branch
           git checkout -b workflow
 
-          # Fix format issues
-          npx prettier --write .
-
           # Add, commit, and push the changes only if there are changes
-          git add .
+          git add CHANGELOG.md
 
           if ! git diff-index --quiet HEAD --; then
             git commit -m "Update changelog for release $LATEST_TAG"
@@ -149,7 +146,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           PR_NUMBER=$(gh pr list --base main --head workflow --json number --jq '.[0].number')
-          gh pr review $PR_NUMBER --approve --reviewer "and-ca" --body "Approved by GitHub Actions workflow" 
+          gh pr review $PR_NUMBER --approve --reviewer "and-ca" --body "Approved by GitHub Actions workflow"
 
       - name: Merge Pull Request
         env:
