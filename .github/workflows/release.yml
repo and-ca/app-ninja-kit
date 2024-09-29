@@ -1,8 +1,8 @@
 name: Update Changelog on Release
 
 permissions:
-  contents: write 
-  actions: read 
+  contents: write
+  actions: read
   pull-requests: write
 
 on:
@@ -16,7 +16,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
-          ref: main  # Ensure we check out the main branch
+          ref: main
 
       - name: Update Changelog
         env:
@@ -137,20 +137,20 @@ jobs:
             # git push origin HEAD:main  
             git push origin workflow
           fi
-      
+
       - name: Create Pull Request
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           gh pr create --base main --head workflow --title "Release" --body "This pull request includes updates for release, including changelog and formatting updates." --label "workflow"
-  
+
       - name: Approve Pull Request
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           PR_NUMBER=$(gh pr list --base main --head workflow --json number --jq '.[0].number')
           gh pr review $PR_NUMBER --approve --body "Approved by GitHub Actions workflow"
-  
+
       - name: Merge Pull Request
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
