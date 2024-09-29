@@ -1,9 +1,9 @@
 name: Update Changelog on Release
 
 permissions:
-  contents: write
-  actions: read
-  pull-requests: read
+  contents: write 
+  actions: read 
+  pull-requests: write
 
 on:
   release:
@@ -14,9 +14,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
-          ref: main
+          ref: main  # Ensure we check out the main branch
 
       - name: Update Changelog
         env:
@@ -30,7 +30,7 @@ jobs:
           # Fetch the latest tag and release date
           git fetch --tags
           LATEST_TAG=$(git describe --tags $(git rev-list --tags --max-count=1))
-          PREVIOUS_TAG=$(git tag --sort=-creatordate | sed -n '2p') 
+          PREVIOUS_TAG=$(git tag --sort=-creatordate --merged | sed -n '2p') 
 
           echo "::debug:: LATEST_TAG = ${LATEST_TAG}" 
           echo "::debug:: PREVIOUS_TAG = ${PREVIOUS_TAG}" 
@@ -52,7 +52,7 @@ jobs:
 
           # Check if PREVIOUS_TAG is set, otherwise use a default value or skip
           if [ -z "$PREVIOUS_TAG" ]; then
-              PREVIOUS_TAG_DATE=2024-01-01T00:00:000Z
+              PREVIOUS_TAG_DATE="2024-01-01T00:00:00Z"
           else
               # Get the previous tag hash and date if it exists
               PREVIOUS_TAG_HASH=$(git rev-parse "$PREVIOUS_TAG")
@@ -100,7 +100,7 @@ jobs:
           } >> CHANGELOG.md
 
           # Fetch all distinct labels that are not "security", "enhancement", "breaking change", or "bug"
-          OTHER_LABELS=$(gh pr list --state merged --base main --json mergedAt,labels --jq ".[] | select(.mergedAt > \"$PREVIOUS_TAG_DATE\" and .mergedAt <= \"$LATEST_TAG_DATE\") | .labels[].name" | sort | uniq | grep -v -E '^(security|enhancement|breaking change|bug)$')
+          OTHER_LABELS=$(gh pr list --state merged --base main --json mergedAt,labels --jq ".[] | select(.mergedAt > \"$PREVIOUS_TAG_DATE\" and .mergedAt <= \"$LATEST_TAG_DATE\") | .labels[].name" | sort | uniq | grep -v -E '^(security|enhancement|breaking change|bug|workflow)$')
 
           echo "::debug:: OTHER_LABELS = ${OTHER_LABELS}"
 
@@ -123,9 +123,37 @@ jobs:
             echo -e "### Other Changes 🛠 \n  ${OTHERS}\n" >> CHANGELOG.md
           fi
 
+          #open the branch
+          git checkout -b workflow
+
+          # Fix format issues
+          npx prettier --write .
+
           # Add, commit, and push the changes only if there are changes
-          git add CHANGELOG.md
+          git add .
+
           if ! git diff-index --quiet HEAD --; then
-            git commit -m "Update changelog for new release"
-            git push origin HEAD:main  
+            git commit -m "Update changelog for release $LATEST_TAG"
+            # git push origin HEAD:main  
+            git push origin workflow
           fi
+      
+      - name: Create Pull Request
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh pr create --base main --head workflow --title "Release" --body "This pull request includes updates for release, including changelog and formatting updates." --label "workflow"
+  
+      - name: Approve Pull Request
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          PR_NUMBER=$(gh pr list --base main --head workflow --json number --jq '.[0].number')
+          gh pr review $PR_NUMBER --approve --body "Approved by GitHub Actions workflow"
+  
+      - name: Merge Pull Request
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          PR_NUMBER=$(gh pr list --base main --head workflow --json number --jq '.[0].number')
+          gh pr merge $PR_NUMBER --merge
