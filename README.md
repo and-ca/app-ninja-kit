@@ -1,19 +1,24 @@
 ![App Icon](./resources/icon.png)
+
 # App Ninja Kit
 
 **App Ninja Kit** is a frameless, powerful, and flexible open-source template designed to streamline the development of modern, fast, and secure cross-platform applications. Built with **[Electron](https://www.electronjs.org/)**, **[Vite](https://electron-vite.org/)**, **[React](https://react.dev/)**, **[Redux](https://redux.js.org/introduction/examples)**, **[TypeScript](https://www.typescriptlang.org/)**, **[Tailwind](https://tailwindcss.com/)**, and featuring **secure local storage** with localization support, App Ninja Kit provides the foundation for building robust apps.
 
 ## Features
+
 - Frameless window for modern UI/UX.
 - Integrated localization support.
 - Double encryption for secure local storage.
 - Built-in user registration and sign-in system.
 
 ## Demo
+
 App Ninja Kit includes a pre-built registration and sign-in system.
 
 ## Recommended Development Setup
+
 We recommend the following tools for an optimal development experience:
+
 - [VSCode](https://code.visualstudio.com/)
 - [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
 - [Prettier](https://prettier.io/)
@@ -39,7 +44,7 @@ npm install
 MAIN_VITE_CRYPTO_SECRET=your-generated-hex-key
 ```
 
-  **Generate Key:** You can generate a HEX key using the following command:
+**Generate Key:** You can generate a HEX key using the following command:
 
 ```bash
  node .\genarateRandomKey.mjs

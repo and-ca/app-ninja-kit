@@ -1,8 +1,8 @@
 name: Update Changelog on Release
 
 permissions:
-  contents: write 
-  actions: read 
+  contents: write
+  actions: read
   pull-requests: read
 
 on:
@@ -16,7 +16,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
         with:
-          ref: main 
+          ref: main
 
       - name: Update Changelog
         env:
@@ -42,7 +42,7 @@ jobs:
           fi
 
           RELEASE_DATE=$(date +'%Y-%m-%d')
-          
+
           # Get the commit hash for the latest and previous tags
           LATEST_TAG_HASH=$(git rev-parse "$LATEST_TAG")
 

@@ -1,6 +1,7 @@
 # Participation Procedure and Contribution Rules
 
 ## Overview
+
 **App Ninja Kit** is an open-source project where everyone is welcome to contribute. Contributions are unpaid, and your reward is the recognition of your work, which will be publicly visible on GitHub. This file outlines the procedures and rules for contributing to the project.
 
 ## Contribution Guidelines
@@ -12,13 +13,15 @@
    Before working on any task, you must create a new branch for your work. This helps us keep the main codebase stable and makes reviewing contributions easier.
 
    The naming convention for branches is as follows:
+
    - **feature/**: For new features or enhancements (e.g., `feature/add-login-system`)
    - **bug/**: For bug fixes (e.g., `bug/fix-login-error`)
    - **security/**: For security improvements (e.g., `security/encrypt-local-storage`)
 
 3. **Before Submitting a PR**  
    Before submitting a Pull Request (PR), ensure the following steps have been completed:
-   - **Test the App**:  
+
+   - **Test the App**:
      - Run tests in development and production environments.
      - Test the build of the application to ensure it functions correctly.
    - **Run Code Quality Checks**:  
@@ -42,6 +45,7 @@
 ## Becoming a Contributor Leader
 
 Our project values meritocracy. To become a **Contributor Leader**, you must consistently demonstrate:
+
 - **High Engagement**: Actively participate in discussions, reviews, and contributions.
 - **Quality Contributions**: Have a strong record of PRs that are approved and merged into the codebase.
 - **Technical Expertise**: Show deep knowledge and experience in the project’s technology stack through contributions that significantly improve the project.
@@ -69,6 +73,7 @@ Leaders are chosen based on their proven expertise, commitment, and ability to m
 By contributing to this project, you agree to indemnify and hold harmless the project owner, its affiliates, and its contributors from any claims, damages, losses, or expenses (including reasonable attorneys' fees) arising out of or in connection with your contributions to this project, including but not limited to any claims of infringement or violation of any rights.
 
 ## Conclusion
+
 Contributing to **App Ninja Kit** is a great way to improve your skills, learn from others, and make a meaningful impact. We look forward to collaborating with you and appreciate every effort from our contributors.
 
 Let’s build something amazing, together!

@@ -16,7 +16,6 @@ import Layout from '../layout/layout';
 const renderRoutes = (): JSX.Element => {
   const { content } = useContext(ContentContext);
   return (
-
     <Routes>
       <Route element={<Layout />}>
         <Route path="/" element={<Welcome welcome={content.pages.welcome} />} />

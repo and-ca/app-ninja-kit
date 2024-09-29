@@ -42,7 +42,7 @@ export default class Window {
     } else {
       this.mainWindow.loadFile(join(__dirname, '../renderer/index.html'));
     }
-  
+
     if (this.isDev) {
       this.mainWindow.webContents.openDevTools();
       //After all done, wait 1 sec then reload the page.

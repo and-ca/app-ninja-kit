@@ -36,13 +36,13 @@ app.whenReady().then(async () => {
         allowFileAccess: true
       });
     }
-    console.log("starting windows...");
+    console.log('starting windows...');
     appElements.window = new Window();
-    console.log("starting tray...");
+    console.log('starting tray...');
     appElements.tray = new TrayMenu('Welcome to my App', 'My App');
-    console.log("starting IPC...");
+    console.log('starting IPC...');
     appElements.IpcSend = new IpcSend(appElements.window);
-    console.log("Ready!");
+    console.log('Ready!');
   } catch (error) {
     console.log('something went wrong. Could not start app!');
     if (error instanceof StoreError) {
