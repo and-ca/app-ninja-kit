@@ -149,7 +149,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           PR_NUMBER=$(gh pr list --base main --head workflow --json number --jq '.[0].number')
-          gh pr review $PR_NUMBER --approve --body "Approved by GitHub Actions workflow"
+          gh pr review $PR_NUMBER --approve --body "Approved by GitHub Actions workflow"  --reviewer "and-ca"
 
       - name: Merge Pull Request
         env:
