@@ -39,9 +39,6 @@
 4. **Submit a Pull Request (PR)**  
    Once your work is complete, submit a PR from your branch. PRs will be reviewed by the contributor leaders. Make sure the PR contains all the necessary information and passes all required checks.
 
-5. **Road Map Compliance**  
-   We are focused on achieving our project goals, so only features or fixes related to the current [Road Map](./ROADMAP.md) will be accepted. Please review the Road Map before starting a new feature to ensure your contribution aligns with the project’s goals.
-
 ## Becoming a Contributor Leader
 
 Our project values meritocracy. To become a **Contributor Leader**, you must consistently demonstrate:
