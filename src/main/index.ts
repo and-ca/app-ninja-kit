@@ -18,6 +18,9 @@ const appElements: AppElements = {
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
+//
+// [TO BE UPDATE] Update the REACT and REDUX path with
+// your path
 app.whenReady().then(async () => {
   try {
     if (isDev) {
@@ -27,7 +30,7 @@ app.whenReady().then(async () => {
       );
       const reduxDevToolsPath = join(
         app.getPath('home'),
-        '/AppData/Local/Google/Chrome/User Data/Default/Extensions/lmhkpmbekcpmknklioeibfkpmmfibljd/3.2.6_0'
+        '/AppData/Local/Google/Chrome/User Data/Default/Extensions/lmhkpmbekcpmknklioeibfkpmmfibljd/3.2.7_0'
       );
       await session.defaultSession.loadExtension(reactDevToolsPath, {
         allowFileAccess: true
@@ -36,6 +39,11 @@ app.whenReady().then(async () => {
         allowFileAccess: true
       });
     }
+  } catch (error) {
+    console.error(error);
+  }
+
+  try {
     console.log('starting windows...');
     appElements.window = new Window();
     console.log('starting tray...');

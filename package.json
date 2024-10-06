@@ -6,19 +6,20 @@
   "author": "and-ca",
   "private": true,
   "scripts": {
+    "genareteKeys": "node ./genarateRandomKey.mjs",
     "format": "prettier --write .",
     "lint": "eslint . --ext .js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix",
     "typecheck:node": "tsc --noEmit -p tsconfig.node.json --composite false",
     "typecheck:web": "tsc --noEmit -p tsconfig.web.json --composite false",
     "typecheck": "npm run typecheck:node && npm run typecheck:web",
-    "start": "electron-vite preview",
-    "dev": "electron-vite dev",
-    "build": "npm run typecheck && electron-vite build",
+    "start": "npm run genareteKeys -- prod && electron-vite preview",
+    "dev": "npm run genareteKeys -- dev && electron-vite dev",
+    "build": "npm run genareteKeys -- build && npm run typecheck && electron-vite build",
     "postinstall": "electron-builder install-app-deps",
     "build:unpack": "npm run build && electron-builder --dir",
     "build:win": "npm run build && electron-builder --win",
-    "build:mac": "electron-vite build && electron-builder --mac",
-    "build:linux": "electron-vite build && electron-builder --linux"
+    "build:mac": "npm run genareteKeys -- build && electron-vite build && electron-builder --mac",
+    "build:linux": "npm run genareteKeys -- build && electron-vite build && electron-builder --linux"
   },
   "repository": {
     "type": "git",

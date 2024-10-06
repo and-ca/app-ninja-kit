@@ -38,17 +38,20 @@ cd app-ninja-kit
 npm install
 ```
 
-3. Create a .env file at the root of the project and add the following environment variable with a HEX key:
+3. Two files, .env.development and .env.production, will be created at the root of the project with the following environment variable, containing a HEX key:
 
 ```.env
 MAIN_VITE_CRYPTO_SECRET=your-generated-hex-key
 ```
 
-**Generate Key:** You can generate a HEX key using the following command:
+**Generate Key:** You can generate new HEX key using the following command:
 
 ```bash
- node .\genarateRandomKey.mjs
+ npm run genarateKey
 ```
+
+* The development key will be generated only once.
+* The production key will be generated before each production run.
 
 4. Start development:
 
