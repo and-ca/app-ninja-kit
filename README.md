@@ -6,6 +6,7 @@
 
 ## Features
 
+- End-to-end encrypted IPC communication for secure inter-process messaging.
 - Frameless window for modern UI/UX.
 - Integrated localization support.
 - Double encryption for secure local storage.
@@ -94,6 +95,15 @@ App Ninja Kit is designed with a strong focus on security. It incorporates key s
   Prevents subframes from accessing Node.js APIs, reducing the risk of attacks through embedded content.
 
   **Note:** These are default security measures, but users are encouraged to explore additional layers of security based on their specific application needs.
+  
+### Secure IPC Communication
+
+App Ninja Kit includes end-to-end encrypted IPC communication between the main and renderer processes using a custom encryption system.
+
+- **MainEncryption.ts** handles encryption and decryption in the main process.
+- **PreloadEncryption.ts** manages secure communication in the renderer process.
+
+This ensures that all messages passed between processes are encrypted, protecting sensitive data during IPC transmission.
 
 ### Double Encryption for App Storage
 
