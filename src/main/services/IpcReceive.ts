@@ -15,10 +15,4 @@ export default class IpcReceive {
   public static handleCloseWindows(): void {
     Window.closeAllWidows();
   }
-
-  public static handleAnotherChannel(event: Electron.IpcMainEvent, args: string): void {
-    console.log(
-      `Received message on another-channel with args: ${args} and frameid: ${event.frameId}`
-    );
-  }
 }
