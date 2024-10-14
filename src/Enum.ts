@@ -33,6 +33,8 @@ export enum ChannelSend {
 }
 
 export enum ChannelInvoke {
+  ConnectionPublicKey = 'connection-get-publicKey',
+  ConnectionSession = 'connection-send-session',
   Config = 'app-config-get',
   Get = 'app-get',
   Save = 'app-save',

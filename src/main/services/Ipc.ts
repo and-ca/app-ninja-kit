@@ -2,13 +2,14 @@ import { ipcMain, BrowserWindow } from 'electron';
 
 import IpcReceive from './IpcReceive';
 import IpcRequest from './IpcRequest';
+import MainEncryption from './MainEncryption';
 import Store from './Store';
 
 //Enum
 import { ChannelSend, ChannelInvoke, ChannelListen } from '../Enum';
 
 //Error
-import { StoreError, IpcError } from '../Error';
+import { StoreError, IpcError, MainEncryptionError } from '../Error';
 
 type ResponseCode = 200 | 400 | 401 | 404 | 500;
 
@@ -24,19 +25,24 @@ export default class Ipc {
   public static store: Store;
   private static ipcMain: Electron.IpcMain;
   private static mainWindow: BrowserWindow;
+  private static mainEncryption: MainEncryption;
 
   constructor(mainWindow: BrowserWindow) {
     Ipc.store = new Store(!this.isDev);
     Ipc.ipcMain = ipcMain;
     Ipc.mainWindow = mainWindow;
+    Ipc.mainEncryption = new MainEncryption();
 
     this.register();
   }
 
+  /**
+   * Register all listeners
+   */
   private register(): void {
     for (const channel of Object.values(ChannelSend)) {
       Ipc.ipcMain.on(channel, (event: Electron.IpcMainEvent, args: string): void => {
-        this.handleSendMessage(channel, event, args);
+        this.handleReceiveMessage(channel, event, args);
       });
     }
 
@@ -50,8 +56,15 @@ export default class Ipc {
     }
   }
 
-  // Handle the message based on the channel
-  private async handleSendMessage(
+
+  /**
+   * Handle the message received from SEND
+   * One Way - No return
+   * @param channel 
+   * @param event 
+   * @param args 
+   */
+  private async handleReceiveMessage(
     channel: ChannelSend,
     event: Electron.IpcMainEvent,
     args: string
@@ -89,7 +102,14 @@ export default class Ipc {
     }
   }
 
-  // Handle the message based on the channel
+  /**
+   * Handle the message received from INVOKE
+   * Two Ways - With return
+   * @param channel
+   * @param event
+   * @param args
+   * @returns
+   */
   private async handleInvokeMessage(
     channel: ChannelInvoke,
     event: Electron.IpcMainInvokeEvent,
@@ -97,17 +117,23 @@ export default class Ipc {
   ): Promise<Response> {
     try {
       switch (channel) {
-        case ChannelInvoke.Save: {
-          const value = await IpcRequest.handleSaveCollection(args);
+        case ChannelInvoke.ConnectionPublicKey: {
+          const value = Ipc.mainEncryption.publicKey;
           return value
             ? this.buildResponse(200, true, 'pass', value)
             : this.buildResponse(200, false, 'fail');
         }
-        case ChannelInvoke.Validate: {
-          const value = await IpcRequest.handleValidateCollection(args);
+        case ChannelInvoke.ConnectionSession: {
+          const value = await Ipc.mainEncryption.setSession(args);
           return value
-            ? this.buildResponse(200, true, 'pass', value)
+            ? this.buildResponse(200, true, 'pass')
             : this.buildResponse(200, false, 'fail');
+        }
+        case ChannelInvoke.Save: {
+          return this.handleInvokeSecureMessage(args, IpcRequest.handleSaveCollection);
+        }
+        case ChannelInvoke.Validate: {
+          return this.handleInvokeSecureMessage(args, IpcRequest.handleValidateCollection);
         }
         default:
           throw new IpcError(`Api does not accept this Channel: ${channel}`, 401);
@@ -119,6 +145,9 @@ export default class Ipc {
       } else if (error instanceof IpcError) {
         console.error(`Ipc error (${error.code}): ${error.message}`);
         return this.buildResponse(400, false, error.message);
+      } else if (error instanceof MainEncryptionError) {
+        console.error(`Session error (${error.code}): ${error.message}`);
+        return this.buildResponse(401, false, error.message);
       } else if (error instanceof Error) {
         console.error(error.message);
         return this.buildResponse(500, false, error.message);
@@ -130,6 +159,11 @@ export default class Ipc {
     }
   }
 
+  /**
+   * Send message to Renderer process
+   * @param channel
+   * @param message
+   */
   public sendMessage(channel: ChannelListen, message: string): void {
     if (!Object.values(ChannelListen).includes(channel)) {
       throw new IpcError('Channel not available', 201);
@@ -137,6 +171,39 @@ export default class Ipc {
     Ipc.mainWindow.webContents.send(channel, message);
   }
 
+  /**
+   * Decrypt, handle, encrypt and return Two Way massage
+   * Find Session Key with Session Id,
+   * Decrypt message with Session Key,
+   * Call the handler,
+   * Encrypt result,
+   * Return encrypted data
+   *
+   * **Session is defined before request with Public-Private Keys
+   * @param args
+   * @param handler
+   * @returns
+   */
+  private async handleInvokeSecureMessage(
+    args: string,
+    handler: CallableFunction
+  ): Promise<Response> {
+    const message = Ipc.mainEncryption.decryptMessage(args);
+    const result = await handler(message);
+    return result
+      ? this.buildResponse(200, true, 'pass', Ipc.mainEncryption.encryptMessage(args, result))
+      : this.buildResponse(200, false, 'fail');
+  }
+
+
+  /**
+   * Build the Return Response
+   * @param code response code
+   * @param success response result
+   * @param message response message
+   * @param data response data
+   * @returns Response object
+   */
   private buildResponse(
     code: ResponseCode,
     success: boolean,

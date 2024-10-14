@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
 //types
-import { FormProps, Payload, Response } from '@renderer/types';
+import { FormProps, Payload } from '@renderer/types';
 
 //enum
 import { FormMessageType, ChannelInvoke, FormType } from '@renderer/Enum';
@@ -53,9 +53,7 @@ const Form = ({
             return;
           }
           delete formState.confirmPassword;
-          const result: Response = JSON.parse(
-            await window.api.invoke(ChannelInvoke.Save, JSON.stringify(db))
-          );
+          const result = await window.api.invoke(ChannelInvoke.Save, JSON.stringify(db));
           if (result.code === 200 && result.success) {
             setMessageType(FormMessageType.Success);
             formAction(result.data);
@@ -66,9 +64,7 @@ const Form = ({
           break;
         }
         case FormType.signin: {
-          const result: Response = JSON.parse(
-            await window.api.invoke(ChannelInvoke.Validate, JSON.stringify(db))
-          );
+          const result = await window.api.invoke(ChannelInvoke.Validate, JSON.stringify(db));
           if (result.code === 200 && result.success) {
             setMessageType(FormMessageType.Success);
             formAction(result?.data);
@@ -92,7 +88,7 @@ const Form = ({
   const fetchData = async (): Promise<void> => {
     if (formType === FormType.update) {
       const data = await window.api.invoke(ChannelInvoke.Get, formName);
-      if (data) reset(JSON.parse(data));
+      if (data.data) reset(JSON.parse(data.data));
     }
   };
 
