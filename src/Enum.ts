@@ -20,7 +20,6 @@ export enum FormName {
 export enum FormType {
   update = 'update',
   create = 'create',
-  get = 'get',
   signin = 'signin'
 }
 

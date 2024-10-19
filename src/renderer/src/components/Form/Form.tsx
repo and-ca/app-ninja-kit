@@ -23,7 +23,9 @@ const Form = ({
   formName,
   message,
   formType,
-  formAction
+  formAction,
+  formPrepare = ( payload: Payload) :Payload=> payload,
+  formEndpoint
 }: FormProps): JSX.Element => {
   const [messageType, setMessageType] = useState(FormMessageType.Default);
   const [isLoading, setIsLoading] = useState(false);
@@ -39,43 +41,31 @@ const Form = ({
   });
   const onSubmit = async (formState): Promise<void> => {
     try {
+      if (!Object.values(FormType).includes(formType)) {
+        throw new Error('Invalid Form Type');
+      }
+
       setIsLoading(true);
-      const db: Payload = {
+      const db: Payload = formPrepare({
         formType,
         formName,
         formState
-      };
-      switch (formType) {
-        case FormType.create: {
-          if (formState.password !== formState.confirmPassword) {
-            setError('confirmPassword', { type: 'manual', message: 'Password does not match!' });
-            setIsLoading(false);
-            return;
-          }
-          delete formState.confirmPassword;
-          const result = await window.api.invoke(ChannelInvoke.Save, JSON.stringify(db));
-          if (result.code === 200 && result.success) {
-            setMessageType(FormMessageType.Success);
-            formAction(result.data);
-          } else {
-            console.log(result.message);
-            setMessageType(FormMessageType.Error);
-          }
-          break;
-        }
-        case FormType.signin: {
-          const result = await window.api.invoke(ChannelInvoke.Validate, JSON.stringify(db));
-          if (result.code === 200 && result.success) {
-            setMessageType(FormMessageType.Success);
-            formAction(result?.data);
-          } else {
-            console.log(result.message);
-            setMessageType(FormMessageType.Error);
-          }
-          break;
-        }
-        default:
-          throw new Error('Invalid Form Type');
+      });
+
+      if (db.formError) {
+        db.formError.forEach((el) => {
+          setError(el.field, el.error);
+        })
+        setIsLoading(false);
+      }
+
+      const result = await window.api.invoke(formEndpoint, JSON.stringify(db));
+      if (result.code === 200 && result.success) {
+        setMessageType(FormMessageType.Success);
+        formAction(result?.data);
+      } else {
+        console.log(result.message);
+        setMessageType(FormMessageType.Error);
       }
       setIsLoading(false);
     } catch (err) {
