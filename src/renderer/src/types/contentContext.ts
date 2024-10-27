@@ -2,7 +2,7 @@
 import { Language, Content } from './index';
 
 export interface CreateContextProps {
-  language: Language;
+  language: Language | undefined;
   content: Content;
   setContent: (language: Language) => void;
 }

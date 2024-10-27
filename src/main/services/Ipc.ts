@@ -135,6 +135,9 @@ export default class Ipc {
         case ChannelInvoke.Validate: {
           return this.handleInvokeSecureMessage(args, IpcRequest.handleValidateCollection);
         }
+        case ChannelInvoke.Language: {
+          return this.handleInvokeSecureMessage(args, IpcRequest.handleGetLanguage);
+        }
         default:
           throw new IpcError(`Api does not accept this Channel: ${channel}`, 401);
       }

@@ -21,7 +21,7 @@ export interface PageProps {
   subTitle?: string;
   body?: string;
   form?: FormSchema[];
-  formAction: (data: string | undefined) => void;
+  formAction?: (data: string | undefined) => void;
   formPrepare?: (data: Payload) => Payload;
   formEndpoint?: ChannelInvoke;
   formName?: string;

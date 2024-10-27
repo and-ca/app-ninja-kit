@@ -8,6 +8,7 @@ import ContentContext from '@renderer/context/ContentContext';
 //Components
 import TitlteBar from '@renderer/components/TitlteBar';
 import Footer from '@renderer/components/Footer';
+import LanguageSelect from '@renderer/components/LanguageSelect';
 
 const Layout = (): JSX.Element => {
   const { content } = useContext(ContentContext);
@@ -19,6 +20,7 @@ const Layout = (): JSX.Element => {
       </Helmet>
       <TitlteBar titleBar={content.titleBar} />
       <div className="w-full">
+        <LanguageSelect/>
         <Outlet />
       </div>
       <Footer footer={content.footer} />
