@@ -9,6 +9,8 @@ import Page from '@renderer/components/Page';
 
 //types
 import { Pages } from '@renderer/types';
+//enum
+import { ChannelInvoke } from '@renderer/Enum';
 
 const Signin = ({ signin }: Pages): JSX.Element => {
   const dispatch = useDispatch();
@@ -28,6 +30,7 @@ const Signin = ({ signin }: Pages): JSX.Element => {
       formType={signin?.formType}
       message={signin?.message}
       formAction={formAction}
+      formEndpoint={ChannelInvoke.Validate}
       link={signin?.link}
       linkLabel={signin?.linkLabel}
     />

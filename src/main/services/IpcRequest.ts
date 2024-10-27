@@ -1,3 +1,6 @@
+import fs from 'fs';
+import path from 'path';
+
 import { User, UserType } from '../models/User';
 
 //Error
@@ -42,5 +45,15 @@ export default class IpcRequest {
       default:
         throw new IpcError(`Api does not accept this FormName: ${data.formName}`, 400);
     }
+  }
+
+  public static async handleGetLanguage(language: string): Promise<string> {
+    const filePath = path.join(__dirname, '../../resources/languages', `${language}.json`);
+
+    if (!fs.existsSync(filePath)) {
+      throw new IpcError(`Could not find language: ${language}`, 400);
+    }
+    
+    return fs.readFileSync(filePath, 'utf-8');
   }
 }

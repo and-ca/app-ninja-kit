@@ -1,5 +1,5 @@
 import { AlertProps } from './alert';
-import { FormName, FormType } from '../Enum';
+import { FormName, FormType, ChannelInvoke } from '../Enum';
 
 export interface FormSchemaClass {
   field?: string;
@@ -58,7 +58,9 @@ export interface FormProps {
   formName: FormName;
   message?: FormMessage;
   formType: FormType;
+  formEndpoint: ChannelInvoke;
   formAction: (data: string | undefined) => void;
+  formPrepare: (data: Payload) => Payload;
 }
 
 export interface FormError {
@@ -82,13 +84,20 @@ export type UserType = {
   lastName?: string;
   email: string;
   password: string;
+  confirmPassword?: string;
 };
 
 export type Payload = {
   formType: FormType;
   formName: FormName;
   formState: UserType;
+  formError?: PayloadFormError[];
 };
+
+export type PayloadFormError = {
+  field: string,
+  error: object
+}
 
 export type ResponseCode = 200 | 400 | 401 | 404 | 500;
 

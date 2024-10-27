@@ -1,10 +1,8 @@
 //types
-import { FooterContent } from './index';
-import { TitleBarContent } from './index';
-import { FormSchema, FormMessage } from './index';
+import { TitleBarContent, FooterContent, FormSchema, FormMessage, Payload } from './index';
 
 //enum
-import { FormType } from '@renderer/Enum';
+import { FormType, ChannelInvoke } from '@renderer/Enum';
 
 export interface Content {
   title: string;
@@ -23,7 +21,9 @@ export interface PageProps {
   subTitle?: string;
   body?: string;
   form?: FormSchema[];
-  formAction: (data: string | undefined) => void;
+  formAction?: (data: string | undefined) => void;
+  formPrepare?: (data: Payload) => Payload;
+  formEndpoint?: ChannelInvoke;
   formName?: string;
   message?: FormMessage;
   formType?: FormType;

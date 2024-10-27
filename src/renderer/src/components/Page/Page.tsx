@@ -14,11 +14,12 @@ const Page = ({
   formName,
   formType,
   formAction,
+  formEndpoint,
   link,
   linkLabel
 }: PageProps): JSX.Element => {
   return (
-    <div className="w-full ">
+    <div className="w-full max-h-70vh ">
       <h1 className={`text-lg font-medium pb-4`}>{title}</h1>
       <h3 className={`text-base pb-2`}>{subTitle}</h3>
       <p className={`text-sm pb-2`}>{body}</p>
@@ -29,6 +30,7 @@ const Page = ({
           message={message}
           formType={formType}
           formAction={formAction}
+          formEndpoint={formEndpoint}
         />
       )}
       {link && linkLabel && (
